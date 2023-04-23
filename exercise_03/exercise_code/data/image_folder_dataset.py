@@ -30,6 +30,7 @@ class ImageFolderDataset(Dataset):
         )
         # transform function that we will apply later for data preprocessing
         self.transform = transform
+        
 
     @staticmethod
     def _find_classes(directory):
@@ -77,8 +78,7 @@ class ImageFolderDataset(Dataset):
         # TODO:                                                                #
         # Return the length of the dataset (number of images)                  #
         ########################################################################
-
-        pass
+        length = len(self.images)
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -115,8 +115,15 @@ class ImageFolderDataset(Dataset):
         #   The labels are supposed to be numbers, in the range of [0, 9],     #
         #   not strings.                                                       #    
         ########################################################################
-
-        pass
+        
+        image_path = self.images[index]
+        label = self.labels[index]
+        image = np.asarray(Image.open(image_path))
+        
+        if self.transform:
+            image = self.transform(image)
+        
+        data_dict = {'image' : image, 'label': label}
 
         ########################################################################
         #                           END OF YOUR CODE                           #
