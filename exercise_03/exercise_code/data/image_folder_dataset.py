@@ -121,6 +121,7 @@ class ImageFolderDataset(Dataset):
         image = np.asarray(Image.open(image_path))
         
         if self.transform:
+            
             image = self.transform(image)
         
         data_dict = {'image' : image, 'label': label}

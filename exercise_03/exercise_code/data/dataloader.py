@@ -44,7 +44,8 @@ class DataLoader:
         #     in section 1 of the notebook.                                    #
         ########################################################################
 
-        pass
+        for i in range(self.__len__):
+            yield 
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -59,7 +60,10 @@ class DataLoader:
         # Don't forget to check for drop last!                                 #
         ########################################################################
 
-        pass
+        if (self.drop_last):
+            length =  len(self.dataset) // self.batch_size
+        else:
+            length =  len(self.dataset) // self.batch_size + 1
 
         ########################################################################
         #                           END OF YOUR CODE                           #
