@@ -43,13 +43,77 @@ class DataLoader:
         #       - build_batch_iterator                                         #
         #     in section 1 of the notebook.                                    #
         ########################################################################
+        
 
-        for i in range(self.__len__):
-            yield 
+        # build datasets
+        def build_loder():
+            batches = build_batches(
+                batch_size=self.batch_size
+            )
+            combined_batches = [combine_batch_dicts(batch) for batch in batches]
+            numpy_batches = [batch_to_numpy(batch) for batch in combined_batches]
+            return numpy_batches
+
+        # build batches
+        def build_batches(batch_size):
+            batches = []  # list of all mini-batches
+            batch = []  # current mini-batch
+            if self.shuffle:
+                for i in np.random.permutation(len(self.dataset)):
+                    batch.append(self.dataset[i])
+                    if len(batch) == batch_size:  # if the current mini-batch is full,
+                        batches.append(batch)  # add it to the list of mini-batches,
+                        batch = []
+            else:
+                for i in range(len(self.dataset)):
+                    batch.append(self.dataset[i])
+                    if len(batch) == batch_size:  # if the current mini-batch is full,
+                        batches.append(batch)  # add it to the list of mini-batches,
+                        batch = []  # and start a new mini-batch
+                # and start a new mini-batch
+            if self.drop_last:
+                return batches
+            elif batch:
+                batches.append(batch)
+                return batches
+        
+
+        # combine batch dicts
+        def combine_batch_dicts(batch):
+            batch_dict = {}
+            for data_dict in batch:
+                for key, value in data_dict.items():
+                    if key not in batch_dict:
+                        batch_dict[key] = []
+                    batch_dict[key].append(value)
+            return batch_dict
+
+        # batch to numpy
+        def batch_to_numpy(batch):
+            numpy_batch = {}
+            for key, value in batch.items():
+                numpy_batch[key] = np.array(value)
+            return numpy_batch
+
+        ###  -----
+
+        batch = []
+        batches = build_loder()
+
+        for batch in batches:
+            yield batch
+        
+        if self.shuffle:
+            pass
+
+        if self.drop_last:
+            pass
 
         ########################################################################
         #                           END OF YOUR CODE                           #
         ########################################################################
+
+    
 
     def __len__(self):
         length = None
@@ -60,10 +124,12 @@ class DataLoader:
         # Don't forget to check for drop last!                                 #
         ########################################################################
 
-        if (self.drop_last):
+        if self.drop_last:
             length =  len(self.dataset) // self.batch_size
-        else:
+        elif len(self.dataset) % self.batch_size:
             length =  len(self.dataset) // self.batch_size + 1
+        else:
+            length =  len(self.dataset) // self.batch_size
 
         ########################################################################
         #                           END OF YOUR CODE                           #
