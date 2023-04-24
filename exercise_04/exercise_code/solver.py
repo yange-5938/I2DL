@@ -104,8 +104,12 @@ class Solver(object):
         #   the gradient!                                                      #
         ########################################################################
 
+        print(self.model.W)
 
-        pass
+        model_forward = model.forward(X_train)
+        _, loss_grad = loss_func(model_forward, y_train)
+        grad = model.backward(loss_grad)
+        opt.step(grad)
 
         ########################################################################
         #                           END OF YOUR CODE                           #

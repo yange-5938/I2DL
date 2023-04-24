@@ -50,7 +50,7 @@ def test_accuracy(y_pred, y_true):
     return acc
 
 def get_housing_data(train_dataset=None, target_column=None):
-    # Load the data into datasets/housing
+    '''# Load the data into datasets/housing
     i2dl_exercises_path = os.path.dirname(os.path.abspath(os.getcwd()))
     root_path = os.path.join(i2dl_exercises_path, "datasets", 'housing')
     housing_file_path = os.path.join(root_path, "housing_train.csv")
@@ -64,8 +64,36 @@ def get_housing_data(train_dataset=None, target_column=None):
 
     #Compute the min, max and mean
     df = train_dataset.df
+
     # Select a feature to keep plus the target column.
     selected_columns = ['GrLivArea', target_column]
+
+    mn, mx, mean = df.min(), df.max(), df.mean()
+'''
+
+    i2dl_exercises_path = os.path.dirname(os.path.abspath(os.getcwd()))
+    root_path = os.path.join(i2dl_exercises_path, "datasets", 'housing')
+    housing_file_path = os.path.join(root_path, "housing_train.csv")
+    download_url = 'https://i2dl.vc.in.tum.de/static/data/housing_train.zip'
+
+    # Always make sure this line was run at least once before trying to
+    # access the data manually, as the data is downloaded in the 
+    # constructor of CSVDataset.
+    target_column = 'SalePrice'
+    train_dataset = CSVDataset(target_column=target_column, root=root_path, download_url=download_url, mode="train")
+    
+    print(train_dataset.df.head())
+    print(train_dataset.df.corr()[target_column].sort_values(ascending=False)[:3])
+
+    # selected feature and target 
+    train_dataset.df[['GrLivArea',target_column]]
+
+
+    df = train_dataset.df
+    # Select a feature to keep plus the target column.
+    selected_columns = ['GrLivArea', target_column]
+
+
     mn, mx, mean = df.min(), df.max(), df.mean()
 
     column_stats = {}
@@ -75,6 +103,7 @@ def get_housing_data(train_dataset=None, target_column=None):
                          'mean': mean[column]}
         column_stats[column] = crt_col_stats
 
+    print("breakpoint 2")
     transform = FeatureSelectorAndNormalizationTransform(column_stats, target_column)
 
     #loading our train, val and test datasets
@@ -85,6 +114,7 @@ def get_housing_data(train_dataset=None, target_column=None):
     test_dataset = CSVDataset(mode="test", target_column=target_column, root=root_path, download_url=download_url,
                               transform=transform)
 
+    print("breakpoint 3 ")
     #Store our data in a matrix
     # load training data into a matrix of shape (N, D), same for targets resulting in the shape (N, 1)
     X_train = [train_dataset[i]['features'] for i in range((len(train_dataset)))]

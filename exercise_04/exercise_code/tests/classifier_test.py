@@ -107,7 +107,13 @@ class ClassifierBackwardTest(UnitTest):
         Classifier.initialize_weights()
         sample_x = np.array([1, 2,
                              3, 4]).reshape(2, 2)
+        print("test fall: ")
+        print("sample x is: ")
+        print(sample_x)
         sample_y = Classifier.forward(sample_x)
+        print("sampel y is: ")
+        print(sample_y)
+
         self.value = Classifier.backward(sample_y)
         self.truth = np.concatenate(
             (sample_x, np.ones((2, 1))), axis=1).T.dot(sample_y * (1 - sample_y) * sample_y)
