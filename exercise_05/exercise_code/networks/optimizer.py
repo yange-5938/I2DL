@@ -55,18 +55,18 @@ class SGD(object):
         """
 
         # Iterate over all parameters
-        for name in self.model.grads.keys():
+        for n in self.model.grads.keys():
 
             # Unpack parameter and gradient
-            w = self.model.params[name]
-            dw = self.model.grads[name]
+            w = self.model.params[n]
+            dw = self.model.grads[n]
 
             # Update the parameter
             w_updated = self._update(w, dw, lr=self.lr)
-            self.model.params[name] = w_updated
+            self.model.params[n] = w_updated
 
             # Reset gradient
-            self.model.grads[name] = 0.0
+            self.model.grads[n] = 0.0
 
 
 class SGDMomentum(object):
@@ -124,7 +124,9 @@ class SGDMomentum(object):
         # velocity v.                                                          #
         ########################################################################
 
-        pass
+        momentum = config.get('momentum')
+        v = momentum*v - lr * dw
+        next_w = w + v
 
         ########################################################################
         #                           END OF YOUR CODE                           #
