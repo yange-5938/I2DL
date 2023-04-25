@@ -10,3 +10,8 @@ There's two version of kernels and its different packages due to the exercises m
 ### TODO
 
 Exercise 5 implementation exercises done, but there's theoretical exericses need to revisit
+
+
+#### Not Clear
+
+- calculating backpass of sigmoid, the Hadamard product is used instead of dot product, why?
