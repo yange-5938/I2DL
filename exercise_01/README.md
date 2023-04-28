@@ -1,9 +1,8 @@
 # Introduction to Deep Learning (IN2346)
 
-# Technical University Munich - SS 23
+# Technical University Munich - WS 2022/23
 
-Welcome to the exercise session of Introduction to Deep Learning. In this file we are going to guide you to setup the environment and run the first exercise. You can ether run the exercise on your PC (see 1.1) or on Google Colab (See 1.2).
-## 1.1 Anaconda setup
+## Anaconda setup
 
 The enviroment that we are going to use throughout this course is Anaconda. 
 
@@ -17,19 +16,24 @@ Next, activate the environment using the command:
 
 `conda activate i2dl`
 
-You will notice that the name of the current activated name is shown in the command line, like:
-
-`(i2dl) current/working/directory>`
-
-Make sure to check the name of the environment everytime you run a command in a terminal.
-
 Within the terminal, direct yourself to exercise_01's folder and continue with installation of requirements and starting jupyter notebook as mentioned above, i.e.
 
 `pip install -r requirements.txt` 
 
 `jupyter notebook`
 
-## 1.2 Google Colab
+
+## Exercise Download
+
+The exercises will be uploaded to the course website at https://www.3dunderstanding.org/i2dl-w22/. You can download the exercises directly from there.
+
+Each exercise contains at least one jupyter notebook, that could be opened by the jupyter-notebook plaform (In the terminal, go to the relevant folder and type `jupyter notebook`), or severla IDEs that support it,
+such as Microsoft's VScode or JetBrains' PyCharm.
+
+The rest of the code resides in .py files. Access those files in any IDE of your choice (VScode, Pycharm, Spyder). You could also work directly on the jupyt plaform, but we do not recommend it.
+IDE is a powerful tool that allows you to navigate easily thorugh the projects, debug and even shows you your errors.
+
+## Google Colab
 
 Deep learning is an expensive practice. It only bursted about 10 years ago into our lives because GPUs became strong enough to allow the magic it is.
 As most of us do not posses a computer that has a GPU, google offers a free platform, that allows you to use their cloud GPUs. Weak as they might be, they are still powerful enough
@@ -46,47 +50,36 @@ Download your zipped exercise from the drive and submit it to the submission pla
 
 NOTE: Pytorch does NOT support MacBooks with the M1 or M2 cpus. Therefore, in order to utilize a GPU --> use colab.
 
-## 2 Exercise Download
-
-The exercises will be uploaded to the course website at https://niessner.github.io/I2DL/. You can download the exercises directly from there or from the [Resources](https://piazza.com/mytum.de/summer2023/in2346ss23/resources) secion on Piazza.
-
-Each exercise contains at least one jupyter notebook, that could be opened by the jupyter-notebook plaform (In the terminal, go to the relevant folder and type `jupyter notebook`), or several IDEs that support it,
-such as Microsoft's VScode or JetBrains' PyCharm.
-
-The rest of the code resides in .py files. Access those files in any IDE of your choice (VScode, Pycharm, Spyder). You could also work directly on the jupyt plaform, but we do not recommend it.
-IDE is a powerful tool that allows you to navigate easily thorugh the projects, debug and even shows you your errors.
-
 ### The directory layout for the exercises
 
-The exercises are organized to work with the file structure shown below. By unzipping the first exercise, you automatically got some of the folders. For the remaining exercises, you need to download and unzip the exercise folder and place it in the `i2dl/` folder.
+    i2dl_exercises
+    ├── datasets                   # The datasets required for all exercises will be placed here
+    ├── exercise_1                 
+    ├── exercise_2                     
+    ├── exercise_3                    
+    ├── exercise_4
+    ├── exercise_5
+    ├── exercise_6
+    ├── exercise_7                              
+    ├── exercise_8
+    ├── exercise_9
+    ├── exercise_10
+    ├── exercise_11
+    ├── exercise_12                    
+    ├── LICENSE
+    └── README.md
 
-    i2dl
-    ├── datasets       # The datasets required for all exercises will be placed here
-    ├── exercise_1                    
-    ├── exercise_2     # To be added later
-    ├── exercise_3     # To be added later
-    ├── exercise_4     # To be added later
-    ├── exercise_5     # To be added later
-    ├── exercise_6     # To be added later
-    ├── exercise_7     # To be added later  
-    ├── exercise_8     # To be added later
-    ├── exercise_9     # To be added later
-    ├── exercise_10    # To be added later
-    ├── exercise_11    # To be added later
-    └── output         # Stores files to be uploaded to the submission system.
 
-You are now ready for the first exercise! Open `1_introduction.ipynb` in Jupyter or Google Colab and follow the instructions to finish the first exercise.
-We also recommend you to read the rest of this file to have a better understanding of how the exercise works.
-## 3. Dataset Download
+## 4. Dataset Download
 
-Datasets will generally be downloaded automatically by exercise notebooks and stored in a common datasets directory shared among all exercises. A sample directory structure for cifar10 dataset is shown below:
+Datasets will generally be downloaded automatically by exercise notebooks and stored in a common datasets directory shared among all exercises. A sample directory structure for cifar10 dataset is shown below:-
 
-    i2dl
+    i2dl_exercises
         ├── datasets                   # The datasets required for all exercises will be downloaded here
             ├── cifar10                # Dataset directory
                 ├── cifar10.p          # dataset files 
 
-## 4. Exercise Submission
+## 5. Exercise Submission
 Your trained models will be automatically evaluated on a test set on our server. To this end, login or register for an account at:
 
 https://i2dl.vc.in.tum.de/
@@ -104,6 +97,6 @@ You will receive an email notification with the results upon completion of the e
 Note that you can re-evaluate your models until the deadline of the current exercise. Whereas the email contains the result of the current evaluation, the entry in the leader board always represents the best score for the respective exercise.
 
 
-## 5. Acknowledgments
+## 6. Acknowledgments
 
-We want to thank the **Stanford Vision Lab** and **PyTorch** for allowing us to build these exercises on material they had previously developed. We also thank the **TU Munich Chair of Computer Graphics and Visualization** for helping create course content.
+We want to thank the **Stanford Vision Lab**, **PyTorch** and **PyTorch Lightning** for allowing us to build these exercises on material they had previously developed. We also thank the **TU Munich Dynamic Vision and Learning Group** for helping create course content.
