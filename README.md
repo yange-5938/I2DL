@@ -9,17 +9,13 @@ There's two version of kernels and its different packages due to the exercises m
 
 ### TODO
 
-<<<<<<< Updated upstream
-Exercise 5 implementation exercises done, but there's theoretical exericses need to revisit
-
-
-#### Not Clear
-
-- calculating backpass of sigmoid, the Hadamard product is used instead of dot product, why?
-=======
 Exercise 5, implementation exercises done, but there's theoretical exericses need to revisit.
 
 Exercise 6, need to try the model to have more than 48% of accuracy.
 
 Exercise 7, tryout pytorch, tensorboard, and pytorch-lighting. Build Classifier of Exercise 6 with pytorch.
->>>>>>> Stashed changes
+
+#### Not Clear
+
+- calculating backpass of sigmoid, the Hadamard product is used instead of dot product, why?
+
