@@ -182,7 +182,35 @@ class MyOwnNetwork(ClassificationNet):
         ########################################################################
 
 
-        pass
+        self.activation = activation
+        self.reg_strength = reg
+
+        self.cache = None
+
+        self.memory = 0
+        self.memory_forward = 0
+        self.memory_backward = 0
+        self.num_operation = 0
+
+        # Initialize random gaussian weights for all layers and zero bias
+        self.num_layer = num_layer
+        self.params = {'W1': std * np.random.randn(input_size, hidden_size),
+                       'b1': np.zeros(hidden_size)}
+
+        for i in range(num_layer - 2):
+            self.params['W' + str(i + 2)] = std * np.random.randn(hidden_size,
+                                                                  hidden_size)
+            self.params['b' + str(i + 2)] = np.zeros(hidden_size)
+
+        self.params['W' + str(num_layer)] = std * np.random.randn(hidden_size,
+                                                                  num_classes)
+        self.params['b' + str(num_layer)] = np.zeros(num_classes)
+
+        self.grads = {}
+        self.reg = {}
+        for i in range(num_layer):
+            self.grads['W' + str(i + 1)] = 0.0
+            self.grads['b' + str(i + 1)] = 0.0
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -195,7 +223,38 @@ class MyOwnNetwork(ClassificationNet):
         ########################################################################
 
 
-        pass
+        """
+        Performs the forward pass of the model.
+
+        :param X: Input data of shape N x D. Each X[i] is a training sample.
+        :return: Predicted value for the data in X, shape N x 1
+                 1-dimensional array of length N with the classification scores.
+        """
+
+        self.cache = {}
+        self.reg = {}
+        X = X.reshape(X.shape[0], -1)
+        # Unpack variables from the params dictionary
+        for i in range(self.num_layer - 1):
+            W, b = self.params['W' + str(i + 1)], self.params['b' + str(i + 1)]
+
+            # Forward i_th layer
+            X, cache_affine = affine_forward(X, W, b)
+            self.cache["affine" + str(i + 1)] = cache_affine
+
+            # Activation function
+            X, cache_sigmoid = self.activation.forward(X)
+            self.cache["sigmoid" + str(i + 1)] = cache_sigmoid
+
+            # Store the reg for the current W
+            self.reg['W' + str(i + 1)] = np.sum(W ** 2) * self.reg_strength
+
+        # last layer contains no activation functions
+        W, b = self.params['W' + str(self.num_layer)],\
+               self.params['b' + str(self.num_layer)]
+        out, cache_affine = affine_forward(X, W, b)
+        self.cache["affine" + str(self.num_layer)] = cache_affine
+        self.reg['W' + str(self.num_layer)] = np.sum(W ** 2) * self.reg_strength
 
         ########################################################################
         #                           END OF YOUR CODE                           #
