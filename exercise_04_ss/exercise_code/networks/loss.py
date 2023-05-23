@@ -121,14 +121,19 @@ class BCE(Loss):
         #   MSE loss, and observe how the individual losses are dealt with.    #
         ########################################################################
 
+        ## calculate loss
+        
+        result = -y_truth * np.log(y_out) - (1 - y_truth) * np.log(1 - y_out)
 
-        pass
+        if individual_losses:
+            return result
+        return np.mean(result)
 
         ########################################################################
         #                           END OF YOUR CODE                           #
         ########################################################################
 
-        return result
+        ##return result
 
     def backward(self, y_out, y_truth):
         """
@@ -151,8 +156,10 @@ class BCE(Loss):
         #   the batch. It is crucial for the magnitude of the gradient.        #
         ########################################################################
 
+        N = len(y_out)
 
-        pass
+        gradient = -1/N * ((y_truth/y_out) - (1 - y_truth )/(1-y_out))
+
 
         ########################################################################
         #                           END OF YOUR CODE                           #

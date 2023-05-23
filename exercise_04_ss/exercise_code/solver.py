@@ -102,9 +102,27 @@ class Solver(object):
         #   Hint 2: Don't forget the order of operations: forward, loss,       #
         #   backward.                                                          #
         ########################################################################
+        
 
 
-        pass
+        model_forward = model.forward(X_train)
+
+
+        loss_grad = loss_func.backward(model_forward, y_train)
+  
+        grad = model.backward(loss_grad)
+
+        opt.step(grad)
+
+
+        '''
+        model.train()
+        model_forward, model_backward = model(X_train)
+        loss, loss_grad = loss_func(model_forward, y_train)
+        grad = loss_grad * model_backward
+        grad = np.mean(grad, 0, keepdims=True)
+        opt.step(grad.T)
+        '''
 
         ########################################################################
         #                           END OF YOUR CODE                           #

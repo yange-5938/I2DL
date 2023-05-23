@@ -59,7 +59,15 @@ class Classifier(Network):
         ########################################################################
 
 
-        pass
+        # X * W
+        xw = X.dot(self.W)
+
+        # save the xw matrix to cache for later use
+        
+
+        # apply sigmoid
+        z = self.sigmoid(xw)
+        self.cache =(X, xw) 
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -95,7 +103,26 @@ class Classifier(Network):
         ########################################################################
 
 
-        pass
+        # L(w) = L(sigmod(xw), Y)
+        # dL(w) /dw = dL(w)/d(y') * d(y')/dw
+        #
+        # derivative of sigmoid(s) w.r.t s and derivative of X*w w.r.t w
+
+        # y = xw, z = sigmoid(y)
+
+        print("below we extract the cache")
+        x, y = self.cache
+        sig_y = self.sigmoid(y)
+
+        # derivative of z w.r.t y
+        dz_dy = sig_y * (1 - sig_y)
+
+        # derivative of L w.r.t y
+        dL_dy = dout * dz_dy
+
+        # standford trick
+        dW = x.T.dot(dL_dy)
+
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -118,7 +145,7 @@ class Classifier(Network):
         ########################################################################
 
 
-        pass
+        out = 1 / (1 + np.e ** -x)
 
         ########################################################################
         #                           END OF YOUR CODE                           #
