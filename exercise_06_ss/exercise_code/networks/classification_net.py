@@ -72,7 +72,6 @@ class ClassificationNet(Network):
 
             # Store the reg for the current W
             self.reg['W' + str(i + 1)] = np.sum(W ** 2) * self.reg_strength
-
         # last layer contains no activation functions
         W, b = self.params['W' + str(self.num_layer)],\
                self.params['b' + str(self.num_layer)]
@@ -233,4 +232,5 @@ class MyOwnNetwork(ClassificationNet):
         #                           END OF YOUR CODE                           #
         ########################################################################
         return grads
+
 

@@ -107,6 +107,12 @@ def findBestConfig(train_loader, val_loader, configs, EPOCHS, PATIENCE,
         model = model_class(**configs[i])
         solver = Solver(model, train_loader, val_loader, **configs[i])
         solver.train(epochs=EPOCHS, patience=PATIENCE)
+        print(' the model has follwoing parameters: ',model.params.keys())
+        print('the shape of W1 is: ',model.params['W1'].shape)
+        print('the shape of b1 is: ',model.params['b1'].shape)
+        print('the shape of W2 is: ',model.params['W2'].shape)
+        print('the shape of b2 is: ',model.params['b2'].shape)
+        print('model.cache: ',model.cache.keys())
         results.append(solver.best_model_stats)
 
         if not best_val or solver.best_model_stats["val_loss"] < best_val:
