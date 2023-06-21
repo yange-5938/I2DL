@@ -31,8 +31,19 @@ class Encoder(nn.Module):
         # Example: nn.Sequential(nn.Linear(10, 20), nn.ReLU())                 #
         ########################################################################
 
-
-        pass
+        self.encoder = nn.Sequential(
+            nn.Linear(input_size, 500),
+            nn.BatchNorm1d(500),
+            nn.ReLU(),
+            nn.Dropout(p=0.5),
+            nn.Linear(500, 100),
+            nn.BatchNorm1d(100),
+            nn.ReLU(),
+            nn.Dropout(p=0.5),
+            nn.Linear(100, latent_dim),
+            nn.BatchNorm1d(latent_dim),
+            nn.ReLU(),
+        )
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -40,6 +51,8 @@ class Encoder(nn.Module):
 
     def forward(self, x):
         # feed x into encoder!
+        print("inside of encode, x shape is: ",x.shape)
+        print(self.encoder)
         return self.encoder(x)
 
 class Decoder(nn.Module):
@@ -56,7 +69,17 @@ class Decoder(nn.Module):
         ########################################################################
 
 
-        pass
+        self.decoder = nn.Sequential(
+            nn.Linear(latent_dim, 100),
+            nn.BatchNorm1d(100),
+            nn.Dropout(p=0.5),
+            nn.ReLU(),
+            nn.Linear(100, 500),
+            nn.BatchNorm1d(500),
+            nn.Dropout(p=0.5),
+            nn.ReLU(),
+            nn.Linear(500, output_size),
+        )
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -87,7 +110,8 @@ class Autoencoder(nn.Module):
         #  of the input.                                                       #
         ########################################################################
 
-        pass
+        latent_vector = self.encoder(x)
+        reconstruction = self.decoder(latent_vector)
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -101,7 +125,7 @@ class Autoencoder(nn.Module):
         # TODO: Define your optimizer.                                         #
         ########################################################################
 
-        pass
+        self.optimizer = torch.optim.Adam(self.parameters(), lr=self.hparams["learning_rate"])
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -132,8 +156,20 @@ class Autoencoder(nn.Module):
         # Don't forget to move the data to the correct device!                 #                                     
         ########################################################################
 
+        # Reset the gradients
+        self.optimizer.zero_grad() # Reset the gradients - VERY important! Otherwise they accumulate.
+        
+        # Set model to training mode
+        
+        # reshape the input
 
-        pass
+        # move the data to the correct device
+        images = batch
+        flattened_images = images.view(images.shape[0], -1)
+        reconstruction = self.forward(flattened_images)
+        loss = loss_func(reconstruction, flattened_images)
+
+
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -157,7 +193,11 @@ class Autoencoder(nn.Module):
         ########################################################################
 
 
-        pass
+        images = batch
+        flattened_images = images.view(images.shape[0], -1)
+
+        reconstruction = self.forward(flattened_images)
+        loss = loss_func(reconstruction, flattened_images)
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -192,7 +232,6 @@ class Classifier(nn.Module):
         self.encoder = encoder
         self.model = nn.Identity()
         self.device = hparams.get("device", torch.device("cuda" if torch.cuda.is_available() else "cpu"))
-        self.set_optimizer()
         
         ########################################################################
         # TODO:                                                                #
@@ -201,13 +240,18 @@ class Classifier(nn.Module):
         ########################################################################
 
 
-        pass
-
+        self.model = nn.Sequential(
+            nn.Linear(20,10)
+        )
         ########################################################################
         #                           END OF YOUR CODE                           #
         ########################################################################
-
+        self.set_optimizer()
+        
+        
     def forward(self, x):
+        print("x is like: " ,x.shape)
+        print(self.encoder.forward(x).shape)
         x = self.encoder(x)
         x = self.model(x)
         return x
@@ -221,7 +265,7 @@ class Classifier(nn.Module):
         ########################################################################
 
 
-        pass
+        self.optimizer = torch.optim.Adam(self.parameters(), lr=self.hparams["learning_rate"])
 
         ########################################################################
         #                           END OF YOUR CODE                           #
