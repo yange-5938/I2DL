@@ -34,7 +34,28 @@ class KeypointModel(nn.Module):
         ########################################################################
         
 
-        pass
+        def conv_sandwich(inp,out,kernel_size,stride,pad):
+            conv = nn.Conv2d(inp,out,kernel_size,stride,pad)
+            nn.init.kaiming_normal_(conv.weight, nonlinearity='relu')
+
+            return nn.Sequential(
+                conv,
+                nn.MaxPool2d(2,2),
+                nn.ReLU()
+            )
+        
+        layers=[]
+        layers.append(conv_sandwich(1,32,kernel_size=3,stride=1,pad=1))
+        layers.append(conv_sandwich(32,64,kernel_size=3,stride=1,pad=1))
+        layers.append(conv_sandwich(64,128,kernel_size=3,stride=1,pad=1))
+        layers.append(conv_sandwich(128,256,kernel_size=3,stride=1,pad=1))
+        self.convs = nn.Sequential(*layers)
+
+        self.fc1 = nn.Sequential(nn.Linear(256*6*6,256),nn.ReLU())
+        self.fc2 = nn.Sequential(nn.Linear(256,30))
+
+        nn.init.kaiming_normal_(self.fc1[0].weight, nonlinearity='relu')
+        nn.init.xavier_normal_(self.fc2[0].weight)
 
         ########################################################################
         #                           END OF YOUR CODE                           #
@@ -53,7 +74,10 @@ class KeypointModel(nn.Module):
         ########################################################################
 
 
-        pass
+        x = self.convs(x)
+        x = x.view(x.size(0), -1)   
+        x = self.fc1(x)
+        x = self.fc2(x)
 
         ########################################################################
         #                           END OF YOUR CODE                           #
